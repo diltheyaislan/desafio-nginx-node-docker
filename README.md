@@ -12,7 +12,7 @@ docker-compose up -d
 
 ## Acessando aplicação 
 
-Abrir no navegador o endereço `http://localhost:8080`
+Abrir no navegador o endereço <http://localhost:8080>
 
 ### Descrição completa do Desafio
 
