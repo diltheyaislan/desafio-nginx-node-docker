@@ -5,11 +5,13 @@ services:
   node:
     build:
       context: ./node
-      dockerfile: Dockerfile
-    image: diltheyaislan/node:prod
     container_name: node
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh node index.js
     networks: 
       - nodenet
+    tty: true
+    depends_on: 
+      - db
 
   nginx:
     build:
@@ -21,6 +23,19 @@ services:
       - nodenet
     ports:
       - "8080:80"
+  
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    environment: 
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=root
+    networks: 
+      - nodenet
   
 networks:
   nodenet:
